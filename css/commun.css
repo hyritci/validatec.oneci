@@ -1,0 +1,48 @@
+:root{--orange:#F39200;--vert:#009A3E;--gris:#e9eaec;--police:system-ui,"Segoe UI",Roboto,sans-serif}
+[data-profil=agent]{--c:var(--vert);--ct:#fff}
+[data-profil=chef]{--c:var(--orange);--ct:#111}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--police);color:#111;background:#fff}
+.page{max-width:480px;margin:0 auto;padding:16px 20px 32px;border-top:6px solid;border-image:linear-gradient(90deg,var(--vert) 50%,var(--orange) 50%) 1}
+.retour{display:inline-grid;place-items:center;width:44px;height:44px;border:1px solid #ddd;border-radius:50%;color:#111;text-decoration:none;font-size:26px}
+.logo{display:block;width:70%;max-width:300px;margin:-30px auto 10px}
+.badge{display:inline-block;background:var(--c);color:var(--ct);padding:8px 18px;border-radius:99px;font-size:14px}
+h1{font-size:clamp(26px,8vw,34px);margin:14px 0 4px}.sous{color:#555;margin:0 0 18px}
+label{display:block;margin:16px 0 6px;font-weight:600}
+input{width:100%;height:56px;border:2px solid #e3e3e3;border-radius:18px;padding:0 16px;font:inherit;font-size:16px}
+input:focus{outline:none;border-color:var(--c)}
+.mdp{position:relative}.mdp button{position:absolute;right:14px;top:0;height:56px;border:0;background:none;color:#555;font:inherit}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;height:56px;margin-top:22px;border:0;border-radius:99px;background:var(--c);color:var(--ct);font:inherit;font-weight:700;font-size:18px;text-decoration:none}
+.btn:disabled{opacity:.6}.btn.vide{background:#fff;border:2px solid #111;color:#111}
+.msg{color:#c62828;min-height:20px;margin:12px 0 0}
+.bas{text-align:center;margin-top:18px}.bas a,.oublie{color:#111;display:inline-block;margin-top:14px}
+/* liste de recherche des noms */
+.lr{position:relative}
+.lr-btn{width:100%;height:56px;border:0;border-radius:28px;background:var(--gris);padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;font:inherit;color:#8a8d91;text-align:left}
+.lr-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lr-btn.plein{color:#111}
+.lr-btn i{flex:none;border:7px solid transparent;border-top-color:#777;margin-top:7px}
+.lr.ouvert .lr-btn i{transform:rotate(180deg);margin-top:-7px}
+.lr-panel{position:absolute;z-index:5;left:0;right:0;top:62px;background:#f1f2fa;border-radius:12px;box-shadow:0 8px 24px #0003;padding-top:6px}
+.lr-q{height:46px;border-radius:0;margin:0 8px 6px;width:calc(100% - 16px);border:1px solid #cfd2e3}
+.lr ul{list-style:none;margin:0;padding:0;max-height:min(260px,40dvh);overflow:auto}
+.lr li{padding:14px 20px;font-size:17px}.lr li:hover,.lr li.sel{background:var(--orange);color:#fff}.lr li.vide{color:#777;background:none}
+/* page d'accueil (2 profils) */
+.intro{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:#151515}
+.fond{flex:1;position:relative;background:#151515 url(../img/fond.jpg) center/cover;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:20px 20px 24px;text-align:center}
+.fond img{position:absolute;top:20px;left:20px;width:84px;background:#fff;border-radius:22px;padding:8px}
+.fond h2{font-size:clamp(24px,7.5vw,34px);margin:14px 0}
+.points{display:flex;gap:8px}.points i{width:12px;height:12px;border-radius:9px;background:#888;transition:.2s}.points i.on{width:34px;background:#fff}
+.feuille{background:#fff;border-radius:28px 28px 0 0;padding:6px 20px 20px}.feuille small{display:block;text-align:center;color:#555;margin-top:16px}
+
+/* fond : une seule image pour les 2 profils → remplace img/fond.jpg (ou change l'url ci-dessus dans .fond) */
+.accueil{background:#151515}
+.fond::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(0,0,0,.6))}
+.fond>*{position:relative}
+.fond{padding-top:max(20px,env(safe-area-inset-top))}
+.fond>img{top:max(20px,env(safe-area-inset-top))}
+.feuille{padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.page{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right));padding-bottom:max(32px,env(safe-area-inset-bottom))}
+/* responsive */
+@media(min-width:600px){body:not(.accueil){background:#f1f2f4}.page{background:#fff;margin:24px auto;box-shadow:0 10px 40px #0002}.feuille{border-radius:28px}}
+@media(max-width:340px){.btn{font-size:16px}.badge{font-size:13px}}
+@media(max-height:560px){.fond>img{width:56px}.fond h2{font-size:22px;margin:8px 0}.feuille .btn{height:48px;margin-top:12px}}

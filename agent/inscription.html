@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" data-profil="agent"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F39200">
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png"><title>Créer un compte · VALIDATEC</title>
+<link rel="stylesheet" href="../css/commun.css"></head>
+<body><main class="page">
+<a class="retour" href="../index.html">‹</a>
+<img class="logo" src="../img/logo-complet.png" alt="VALIDATEC">
+<span class="badge">Profil agent</span>
+<h1>Créer un compte</h1>
+<p class="sous">Remplis ces informations pour ouvrir ton espace agent.</p>
+<label>Nom et prénoms</label><div id="nom"></div>
+<label>Téléphone</label><input id="tel" type="tel" inputmode="numeric" placeholder="07 00 00 00 00">
+<label>Mot de passe (8 caractères minimum)</label><div class="mdp"><input id="mdp" type="password" autocomplete="new-password"><button type="button" data-voir="mdp">Afficher</button></div>
+<label>Confirmer le mot de passe</label><div class="mdp"><input id="mdp2" type="password" autocomplete="new-password"><button type="button" data-voir="mdp2">Afficher</button></div>
+<p class="msg" id="msg"></p>
+<button class="btn" id="valider">Créer mon compte</button>
+<p class="bas">Déjà un compte ? <a href="connexion.html">Se connecter</a></p>
+</main>
+<script type="module">
+import { LISTE } from "../data/agents.js";
+import { inscription } from "../js/auth.js";
+inscription("agent", LISTE);
+</script><script src="../js/pwa.js"></script></body></html>

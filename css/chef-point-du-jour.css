@@ -1,0 +1,13 @@
+/* Point du jour (chef / sous-chef) : fenêtre « Pour… » et choix de l'agent.
+   Le reste vient de point-du-jour.css (thème orange grâce à data-profil="chef"). */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
+.modal-carte{width:min(100%,380px);padding:26px 22px 20px;text-align:center;background:#fff;border-radius:26px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.modal-carte h2{margin:0;font-size:22px;letter-spacing:2px}
+.modal-carte p{margin:6px 0 4px;color:#6b7280;font-size:15px}
+.modal-carte .btn{margin-top:14px}
+.pour-moi{background:var(--orange);color:#111}
+.pour-agent{background:var(--vert);color:#fff}
+.annuler{display:inline-block;margin-top:18px;color:#6b7280;font-size:15px}
+.choix-agent{max-width:420px;margin:0 auto}
+.lr-btn.erreur{outline:2px solid #D93025}
+.changer{margin-top:10px;border:0;background:none;color:#a85f00;font:inherit;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer}

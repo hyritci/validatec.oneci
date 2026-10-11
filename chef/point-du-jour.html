@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" data-profil="chef"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F39200">
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<title>Point du jour · VALIDATEC</title>
+<link rel="stylesheet" href="../css/commun.css">
+<link rel="stylesheet" href="../css/chef-accueil.css">
+<link rel="stylesheet" href="../css/point-du-jour.css">
+<link rel="stylesheet" href="../css/chef-point-du-jour.css"></head>
+<body class="home">
+<div class="bande"></div>
+
+<header class="haut">
+  <button class="burger" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
+  <img class="logo-pj" src="../img/logo-complet.png" alt="VALIDATEC">
+</header>
+
+<main class="pj">
+  <section class="identite">
+    <h1 data-nom id="nom-moi" hidden>…</h1>
+    <h1 id="nom-agent" hidden></h1>
+    <div class="choix-agent" id="choix-agent" hidden></div>
+    <span class="date" id="date-jour"></span><br>
+    <button type="button" class="changer" id="changer" hidden>Changer (moi-même / un agent)</button>
+  </section>
+
+  <h2 class="titre-section">Lieu et heure</h2>
+  <div class="carte">
+    <div class="duo">
+      <div class="champ">
+        <label for="lieu"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Lieu</label>
+        <select class="sel" id="lieu" required><option value="" selected disabled>Choisir le lieu</option></select>
+      </div>
+      <div class="champ">
+        <label for="heure"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Heure</label>
+        <select class="sel" id="heure" required disabled><option value="" selected disabled>Choisir l'heure</option></select>
+      </div>
+    </div>
+    <p class="resume" id="resume" hidden></p>
+  </div>
+
+  <h2 class="titre-section vert">Scénario</h2>
+  <div id="scenarios"></div>
+
+  <p class="msg" id="msg" role="alert"></p>
+  <button class="btn suivant" id="suivant">SUIVANT »</button>
+</main>
+
+<!-- Fenêtre « Pour… » : s'affiche à l'ouverture de la page -->
+<div class="modal" id="modal-pour" role="dialog" aria-modal="true" aria-labelledby="pour-titre">
+  <div class="modal-carte">
+    <h2 id="pour-titre">POUR</h2>
+    <p>Pour qui fais-tu le point du jour ?</p>
+    <button class="btn pour-moi" id="pour-moi">MOI-MÊME</button>
+    <button class="btn pour-agent" id="pour-agent">UN AGENT</button>
+    <a class="annuler" href="accueil.html">Annuler</a>
+  </div>
+</div>
+
+<!-- Menu latéral (même menu que l'accueil chef) -->
+<div class="menu-fond" id="menu-fond"></div>
+<aside class="menu" id="menu" aria-label="Menu">
+  <div class="menu-profil">
+    <div class="avatar" data-initiales></div>
+    <strong data-nom>…</strong>
+    <span class="badge">Profil chef / sous-chef</span>
+  </div>
+  <nav>
+    <a href="accueil.html">Accueil</a>
+    <a href="point-du-jour.html" aria-current="page">Point du jour</a>
+    <a href="permission.html">Permission</a>
+    <a href="justificatif.html">Justificatif</a>
+    <a href="absents.html">Les absents</a>
+  </nav>
+  <div class="menu-bas"><button class="btn-quitter" id="quitter">Se déconnecter</button></div>
+</aside>
+
+<script src="../js/menu.js"></script>
+<script type="module">
+import { espace } from "../js/espace.js";
+espace("chef");
+</script>
+<script type="module" src="../js/point-du-jour.js"></script>
+<script src="../js/pwa.js"></script></body></html>
