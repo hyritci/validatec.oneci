@@ -1,0 +1,38 @@
+/* Demande de permission (agent et chef). S'ajoute à point-du-jour.css (cartes, titres, résumé, boutons). */
+.reglement-lien{display:block;margin:12px 0 0;text-align:center;font-weight:700;letter-spacing:.3px;color:#111}
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px}
+.grille .plein{grid-column:1/-1}
+@media(max-width:380px){.grille,.fiche{grid-template-columns:1fr}}
+.grille label{display:block;margin:10px 4px 6px;font-size:13px;font-weight:600;color:#444}
+.grille input,.grille textarea{width:100%;border:2px solid #e1e5e3;border-radius:16px;background:#f6f8f7;font:inherit;font-size:16px;color:#111}
+.grille input{height:52px;padding:0 14px}
+.grille textarea{padding:12px 14px;resize:none}
+.grille input:focus,.grille textarea:focus{outline:none;border-color:var(--c);background:#fff}
+.periode{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:8px;align-items:center}
+.periode span{font-weight:600;color:#444}
+.signature-boite{display:grid;place-items:center;width:100%;min-height:140px;padding:10px;background:#fff;border:2px solid var(--c);border-radius:18px;color:#8a8d91;font:inherit;font-size:17px;cursor:pointer}
+.signature-boite img{max-width:100%;max-height:120px}
+
+/* Résumé */
+.fiche{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin:18px 0 0}
+.fiche div{padding:12px 14px;background:#fff;border:1px solid #e8ebe9;border-radius:16px}
+.fiche .plein{grid-column:1/-1}
+.fiche dt,.sig-resume small{display:block;margin-bottom:3px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280}
+.fiche dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.sig-resume{margin-top:10px;padding:12px 14px;background:#fff;border:2px solid var(--c);border-radius:16px}
+.sig-resume img{display:block;max-width:100%;max-height:110px;margin-top:6px}
+.btn.telecharger{background:var(--orange);color:#111;letter-spacing:.5px}
+
+/* Fenêtre de signature */
+.sig-fond{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.55)}
+.sig-carte{width:min(100%,440px);padding:18px;background:#fff;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.sig-carte p{margin:0 0 10px;font-weight:700;text-align:center}
+.sig-zone{display:block;width:100%;height:200px;border:2px dashed #9aa0a6;border-radius:14px;background:#fafafa;touch-action:none;cursor:crosshair}
+.sig-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sig-actions .btn{height:50px;margin-top:14px}
+
+/* Page « Règlement de permission » : image de la fiche */
+.reg{max-width:720px}
+.retour-lien{display:inline-block;margin:6px 0 10px;color:#111;font-weight:600;text-decoration:none}
+.reg h1{font-size:clamp(22px,6vw,30px);margin:4px 0 6px}
+.reg-image{display:block;width:100%;height:auto;margin-top:6px;border:1px solid #d8ddda;border-radius:8px}

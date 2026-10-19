@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr" data-profil="agent"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F39200">
+<link rel="icon" href="img/icon-192.png">
+<title>Règlement de permission · VALIDATEC</title>
+<link rel="stylesheet" href="css/commun.css">
+<link rel="stylesheet" href="css/permission.css"></head>
+<body><main class="page reg">
+  <a class="retour-lien" href="#" id="retour">‹ Retour</a>
+  <h1>Règlement de permission</h1>
+  <p class="sous">Touche l'image pour l'agrandir.</p>
+  <!-- Pour changer la fiche : remplace le fichier img/reglement-permission.jpg (même nom) -->
+  <a href="img/reglement-permission.jpg"><img class="reg-image" src="img/reglement-permission.jpg" alt="Demande d'autorisation d'absence : règlement des permissions"></a>
+</main>
+<script>
+document.getElementById('retour').onclick = e => { e.preventDefault(); history.length > 1 ? history.back() : (location.href = 'index.html'); };
+</script></body></html>

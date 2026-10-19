@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr" data-profil="agent"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F39200">
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<title>Permission · VALIDATEC</title>
+<link rel="stylesheet" href="../css/commun.css">
+<link rel="stylesheet" href="../css/agent-accueil.css">
+<link rel="stylesheet" href="../css/point-du-jour.css">
+<link rel="stylesheet" href="../css/permission.css"></head>
+<body class="home">
+<div class="bande"></div>
+
+<header class="haut">
+  <button class="burger" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
+  <img class="logo-pj" src="../img/logo-complet.png" alt="VALIDATEC">
+</header>
+
+<main class="pj">
+  <section class="identite">
+    <h1 data-nom>…</h1>
+    <span class="date" id="date-jour"></span>
+  </section>
+  <a class="reglement-lien" href="../reglement-permission.html">REGLEMENT DE PERMISSION</a>
+
+  <h2 class="titre-section">Informations</h2>
+  <div class="carte"><div class="grille">
+    <div><label for="matricule">Matricule (facultatif)</label><input id="matricule" maxlength="20" autocomplete="off"></div>
+    <div><label for="fonction">Fonction</label><input id="fonction" maxlength="40"></div>
+    <div><label for="tel">Téléphone</label><input id="tel" type="tel" inputmode="numeric" maxlength="14" placeholder="07 00 00 00 00"></div>
+    <div><label for="email">Adresse électronique (facultatif)</label><input id="email" type="email" maxlength="60" autocomplete="email"></div>
+    <div><label for="service">Service</label><input id="service" maxlength="40"></div>
+    <div><label for="lieu">Lieu de service</label><input id="lieu" maxlength="40"></div>
+  </div></div>
+
+  <h2 class="titre-section vert">Absence</h2>
+  <div class="carte"><div class="grille">
+    <div class="plein"><label for="motif">Motif de l'absence</label><textarea id="motif" rows="2" maxlength="150"></textarea></div>
+    <div class="plein"><label for="destination">Destination</label><input id="destination" maxlength="40"></div>
+    <div class="plein"><label for="du">Période d'absence</label>
+      <div class="periode"><span>Du</span><input id="du" class="date-champ" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA"><span>au</span><input id="au" class="date-champ" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA"></div></div>
+    <div><label for="duree">Durée</label><input id="duree" maxlength="30" placeholder="ex. 01 JOUR"></div>
+    <div><label for="reprise">Date de reprise</label><input id="reprise" class="date-champ" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA"></div>
+  </div></div>
+
+  <h2 class="titre-section">Signature</h2>
+  <button type="button" class="signature-boite" id="signature-boite"><span>Signature</span></button>
+
+  <p class="msg" id="msg" role="alert"></p>
+  <button class="btn suivant" id="suivant">SUIVANT »</button>
+</main>
+
+<!-- Menu latéral (même menu que l'accueil) -->
+<div class="menu-fond" id="menu-fond"></div>
+<aside class="menu" id="menu" aria-label="Menu">
+  <div class="menu-profil">
+    <div class="avatar" data-initiales></div>
+    <strong data-nom>…</strong>
+    <span class="badge">Profil agent</span>
+  </div>
+  <nav>
+    <a href="accueil.html">Accueil</a>
+    <a href="point-du-jour.html">Point du jour</a>
+    <a href="permission.html" aria-current="page">Permission</a>
+    <a href="justificatif.html">Justificatif</a>
+  </nav>
+  <div class="menu-bas"><button class="btn-quitter" id="quitter">Se déconnecter</button></div>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../js/menu.js"></script>
+<script type="module">
+import { espace } from "../js/espace.js";
+espace("agent");
+</script>
+<script type="module" src="../js/permission.js"></script>
+<script src="../js/pwa.js"></script></body></html>
