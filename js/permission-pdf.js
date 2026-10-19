@@ -84,6 +84,10 @@ export async function genererPDF(d) {
 
   // Signatures
   doc.setFontSize(10); doc.text('Abidjan le', 110.5, 203.6); pointilles(128, 196, 204.4);
+  if (d.date) {                                                  // date de la demande, à côté de « Abidjan le »
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(...BLEU);
+    doc.text(sur(d.date), 131, 203.3); doc.setTextColor(0);
+  }
   doc.setFontSize(11); doc.setFont('times', 'bold'); doc.text('Bénéficiaire', 25, 227);
   doc.setFont('times', 'normal'); const wa = doc.getTextWidth('Avis du '); doc.text('Avis du ', 73.3, 223.5);
   doc.setFont('times', 'bold'); doc.text('Supérieur', 73.3 + wa, 223.5); doc.text('Hiérarchique', 77.5, 228);
