@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr" data-profil="chef"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F39200">
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<title>Les absents · VALIDATEC</title>
+<link rel="stylesheet" href="../css/commun.css">
+<link rel="stylesheet" href="../css/chef-accueil.css">
+<link rel="stylesheet" href="../css/point-du-jour.css">
+<link rel="stylesheet" href="../css/absents.css"></head>
+<body class="home">
+<div class="bande"></div>
+
+<header class="haut">
+  <button class="burger" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
+  <img class="logo-pj" src="../img/logo-complet.png" alt="VALIDATEC">
+</header>
+
+<main class="pj">
+  <section class="identite">
+    <h1 id="titre-page">LES ABSENTS</h1>
+    <span class="date" id="date-jour"></span>
+    <p class="chef-nom" data-nom>…</p>
+  </section>
+
+  <h2 class="titre-section">Agents absents</h2>
+  <div id="lignes"></div>
+  <button type="button" class="btn vide ajouter" id="ajouter">+ ajouter</button>
+
+  <p class="msg" id="msg" role="alert"></p>
+  <button class="btn suivant" id="suivant">SUIVANT »</button>
+</main>
+
+<!-- Menu latéral (même menu que l'accueil chef) -->
+<div class="menu-fond" id="menu-fond"></div>
+<aside class="menu" id="menu" aria-label="Menu">
+  <div class="menu-profil">
+    <div class="avatar" data-initiales></div>
+    <strong data-nom>…</strong>
+    <span class="badge">Profil chef / sous-chef</span>
+  </div>
+  <nav>
+    <a href="accueil.html">Accueil</a>
+    <a href="point-du-jour.html">Point du jour</a>
+    <a href="permission.html">Permission</a>
+    <a href="justificatif.html">Justificatif</a>
+    <a href="absents.html" aria-current="page">Les absents</a>
+  </nav>
+  <div class="menu-bas"><button class="btn-quitter" id="quitter">Se déconnecter</button></div>
+</aside>
+
+<script src="../js/menu.js"></script>
+<script type="module">
+import { espace } from "../js/espace.js";
+espace("chef");
+</script>
+<script type="module" src="../js/absents.js"></script>
+<script src="../js/pwa.js"></script></body></html>

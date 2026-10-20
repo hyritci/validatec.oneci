@@ -1,0 +1,14 @@
+/* Les absents (chef / sous-chef). S'ajoute à point-du-jour.css (titres, résumé, confirmation, boutons). */
+.chef-nom{margin:14px 0 0;font-size:clamp(18px,5vw,22px);font-weight:700;text-align:center}
+.num{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:var(--ct);font-size:13px;font-weight:700}
+
+/* Lignes de saisie : une liste de recherche par agent */
+.ligne-absent{display:grid;grid-template-columns:28px 1fr 44px;gap:10px;align-items:center;margin-bottom:12px}
+.retirer{width:44px;height:44px;border:0;border-radius:50%;background:#fdeaea;color:#c62828;font-size:18px;cursor:pointer}
+.ligne-absent.erreur-ligne .lr-btn{outline:2px solid #D93025}
+.btn.ajouter{display:flex;width:fit-content;min-width:200px;height:48px;margin:6px auto 0;padding:0 24px;border-style:dashed}
+
+/* Résumé */
+.compte{margin:18px 4px 0;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b7280}
+.liste-absents{display:grid;gap:10px;margin:10px 0 0;padding:0;list-style:none}
+.liste-absents li{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid #e8ebe9;border-left:6px solid var(--c);border-radius:16px;font-weight:600}
