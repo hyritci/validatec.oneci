@@ -1,5 +1,5 @@
 import { auth, db } from './firebase-config.js';
-import { collection, addDoc, doc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, doc, getDoc, writeBatch, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { LISTE } from '../data/agents.js';
 import { listeRecherche } from './liste-recherche.js';
 
@@ -76,10 +76,12 @@ async function envoyer(d) {
   try {
     const p = await getDoc(doc(db, 'users', u.uid));
     if (!p.exists()) throw { code: 'profil-introuvable' };
-    await addDoc(collection(db, COLLECTION), {
+    const batch = writeBatch(db);                       // un document par agent absent (permet à l'agent de retrouver ses absences)
+    d.absents.forEach(a => batch.set(doc(collection(db, COLLECTION)), {
       uid: u.uid, chefId: p.data().id, chefNom: p.data().nom, fonction: p.data().fonction || null,
-      date: d.date, dateISO: d.dateISO, absents: d.absents, nombre: d.absents.length, envoyeLe: serverTimestamp()
-    });
+      agentId: a.id, nom: a.nom, date: d.date, dateISO: d.dateISO, envoyeLe: serverTimestamp()
+    }));
+    await batch.commit();
     banniere.hidden = true;
     vue.innerHTML = `<div class="succes"><div class="coche">✓</div><h3>Absents envoyés</h3>
       <p>${d.absents.length} agent(s) absent(s) · ${esc(d.date)}</p>

@@ -1,0 +1,36 @@
+/* Justificatif (agent et chef). S'ajoute à point-du-jour.css (cartes à interrupteur, boutons, confirmation). */
+.aucun{margin:0;padding:26px 10px;text-align:center;color:#6b7280}
+
+/* Dates déjà justifiées : carte verte avec « justifié » */
+.sc.justifie{display:block;background:var(--vert);border-color:var(--vert)}
+.sc.justifie .sc-tete{color:#fff;cursor:default;font-size:18px}
+.etiquette{padding-left:16px;border-left:1px solid rgba(255,255,255,.6);font-size:17px;font-weight:600}
+
+/* Ajout manuel d'une date (chef, « pour moi-même ») */
+.ajout-date{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px}
+.ajout-date input{height:52px;padding:0 14px;border-radius:16px}
+.ajout-date .btn{width:auto;height:52px;margin:0;padding:0 16px}
+
+/* Étape 2 : dates choisies, motif, cases de justificatifs */
+.dates-choisies{display:grid;gap:8px;max-width:300px;margin:16px auto 0}
+.date-box{padding:14px;text-align:center;font-size:18px;font-weight:700;background:#f1f2f4;border:1px solid #d9dedb;border-radius:14px}
+input#motif{height:52px;padding:0 14px;border:2px solid #e1e5e3;border-radius:16px;background:#f6f8f7;font-size:16px}
+input#motif:focus{outline:none;border-color:var(--c);background:#fff}
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cases.erreur{outline:2px solid #D93025;outline-offset:6px;border-radius:8px}
+.case-w{position:relative}
+.case{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;aspect-ratio:1/1.1;padding:6px;overflow:hidden;background:#fff;border:2px dashed #9aa0a6;border-radius:16px;color:#6b7280;font:inherit;cursor:pointer}
+.case .plus{font-size:28px;line-height:1}
+.case small{font-size:11px;color:#9aa0a6}
+.case.plein{border-style:solid;border-color:var(--c)}
+.case img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.case .pdf{font-size:22px;font-weight:700;color:#c62828}
+.case .nom{max-height:2.7em;overflow:hidden;font-size:11px;word-break:break-all}
+.case-x{position:absolute;top:-8px;right:-8px;width:28px;height:28px;border:0;border-radius:50%;background:#D93025;color:#fff;font-size:14px;cursor:pointer}
+
+/* Fenêtre « Appareil photo / Sélection dans le téléphone » */
+.src-fond{position:fixed;inset:0;z-index:60;display:grid;align-items:end;justify-items:center;padding:16px;background:rgba(0,0,0,.55)}
+.src-carte{width:min(100%,420px);padding:20px;text-align:center;background:#fff;border-radius:22px}
+.src-carte h2{margin:0 0 4px;font-size:20px}
+.src-carte .btn{margin-top:12px}
+.src-annuler{margin-top:14px;border:0;background:none;color:#6b7280;font:inherit;text-decoration:underline;cursor:pointer}

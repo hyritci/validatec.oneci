@@ -7,7 +7,7 @@ const modal = $('modal-pour'), nomMoi = $('nom-moi'), nomAgent = $('nom-agent'),
 let pour = null, agent = null;               // pour = 'moi' ou 'agent'
 
 // Liste de recherche des agents (data/agents.js), comme les autres recherches
-listeRecherche(choix, LISTE, x => (agent = x));
+listeRecherche(choix, LISTE, x => { agent = x; document.dispatchEvent(new Event('cible-changee')); });
 choix.querySelector('.lr-btn span').textContent = "Nom et prénoms de l'agent";
 
 const ouvrir = () => { modal.hidden = false; document.body.style.overflow = 'hidden'; $('pour-moi').focus(); };
@@ -17,6 +17,7 @@ const choisir = mode => {
   nomMoi.hidden = mode !== 'moi';            // moi-même : mon nom
   choix.hidden = mode !== 'agent';           // un agent : la liste de recherche
   changer.hidden = false;
+  document.dispatchEvent(new Event('cible-changee'));   // la page peut ainsi recharger ses données
 };
 $('pour-moi').onclick = () => choisir('moi');
 $('pour-agent').onclick = () => choisir('agent');
