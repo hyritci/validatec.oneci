@@ -1,6 +1,7 @@
 import { auth, db } from './firebase-config.js';
 import { collection, doc, getDoc, writeBatch, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { LISTE } from '../data/agents.js';
+import { LIEUX } from '../data/lieux.js';
 import { listeRecherche } from './liste-recherche.js';
 
 // Nom EXACT de la collection Firestore qui reçoit les absents (copie-le tel qu'il apparaît dans la console Firebase)
@@ -36,6 +37,7 @@ function retirer(l) {
   l.el.remove(); lignes.splice(lignes.indexOf(l), 1);
   if (lignes.length) numeroter(); else ajouterLigne(false);   // il reste toujours une ligne
 }
+LIEUX.forEach(l => $('lieu').add(new Option(l.nom, l.nom)));      // lieu de service (data/lieux.js)
 ajouterLigne(false);
 $('ajouter').onclick = () => ajouterLigne(true);
 
@@ -55,7 +57,7 @@ const montrer = resume => {
 };
 
 function afficherResume(d) {
-  vue.innerHTML = `<p class="compte">${d.absents.length} agent(s) absent(s)</p>
+  vue.innerHTML = `<p class="compte">${d.absents.length} agent(s) absent(s) · ${esc(d.lieu)}</p>
     <ol class="liste-absents">${d.absents.map((a, i) => `<li><span class="num">${i + 1}</span>${esc(a.nom)}</li>`).join('')}</ol>
     <label class="confirme"><input type="checkbox" id="confirme"><i></i><span>Je confirme les informations</span></label>
     <p class="msg" id="msg-resume" role="alert"></p>
@@ -79,7 +81,7 @@ async function envoyer(d) {
     const batch = writeBatch(db);                       // un document par agent absent (permet à l'agent de retrouver ses absences)
     d.absents.forEach(a => batch.set(doc(collection(db, COLLECTION)), {
       uid: u.uid, chefId: p.data().id, chefNom: p.data().nom, fonction: p.data().fonction || null,
-      agentId: a.id, nom: a.nom, date: d.date, dateISO: d.dateISO, envoyeLe: serverTimestamp()
+      agentId: a.id, nom: a.nom, lieu: d.lieu, date: d.date, dateISO: d.dateISO, envoyeLe: serverTimestamp()
     }));
     await batch.commit();
     banniere.hidden = true;
@@ -105,6 +107,8 @@ const erreur = (texte, el) => {
 $('suivant').onclick = () => {
   msg.textContent = '';
   lignes.forEach(l => l.el.classList.remove('erreur-ligne'));
+  $('lieu').classList.remove('erreur');
+  if (!$('lieu').value) { $('lieu').classList.add('erreur'); return erreur('Choisis le lieu de service.', $('lieu')); }
   const choisis = lignes.filter(l => l.choix);                       // les lignes vides sont ignorées
   if (!choisis.length) { lignes[0].el.classList.add('erreur-ligne'); return erreur('Ajoute au moins un agent absent.', lignes[0].el); }
   const vus = new Set();
@@ -113,7 +117,7 @@ $('suivant').onclick = () => {
     vus.add(l.choix.id);
   }
   afficherResume({
-    date: aujourdhui, dateISO: maintenant.toLocaleDateString('sv-SE'),
+    date: aujourdhui, dateISO: maintenant.toLocaleDateString('sv-SE'), lieu: $('lieu').value,
     absents: choisis.map(l => ({ id: l.choix.id, nom: l.choix.nom }))
   });
 };

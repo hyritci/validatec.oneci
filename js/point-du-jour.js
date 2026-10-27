@@ -1,7 +1,8 @@
 import { LIEUX } from '../data/lieux.js';
 import { SCENARIOS } from '../data/scenarios.js';
 import { auth, db } from './firebase-config.js';
-import { collection, addDoc, doc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, addDoc, doc, getDoc, getDocs, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
 // Nom EXACT de la collection Firestore qui reçoit les points (copie-le tel qu'il apparaît dans la console Firebase)
 const COLLECTION = 'point du jour';
@@ -17,6 +18,44 @@ const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const maintenant = new Date();
 const aujourdhui = maintenant.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 $('date-jour').textContent = 'Points du ' + aujourdhui;
+
+// ---------- Un agent déclaré absent aujourd'hui (voir « Les absents ») ne peut pas faire ses points ----------
+const aujourdhuiISO = maintenant.toLocaleDateString('sv-SE');
+const profilPret = new Promise(resolve => {
+  let off = onAuthStateChanged(auth, async u => {
+    if (!u) return;
+    const p = await getDoc(doc(db, 'users', u.uid));
+    if (p.exists()) { off(); resolve(p.data()); }
+  });
+});
+async function estAbsent(id) {
+  try {
+    const r = await getDocs(query(collection(db, 'absents'), where('agentId', '==', id), where('dateISO', '==', aujourdhuiISO)));
+    return !r.empty;
+  } catch (e) { console.warn('Vérification des absences impossible :', e.code || e.message); return false; }
+}
+let bloque = '', jetonAbsence = 0;
+const bandeau = document.createElement('p');
+bandeau.className = 'msg'; bandeau.style.cssText = 'margin:14px 0 0;font-weight:700;text-align:center'; bandeau.hidden = true;
+main.querySelector('.identite').after(bandeau);
+async function controlerAbsence() {
+  const mon = ++jetonAbsence;
+  let id = null, texte = '';
+  if (chef) {
+    if (chef.verifier()) id = null;                                   // mode ou agent pas encore choisi
+    else { const c = chef.cible(); if (c.pour === 'agent') { id = c.id; texte = `${c.nom} est déclaré absent aujourd'hui : ses points ne peuvent pas être faits.`; } }
+  } else { id = (await profilPret).id; texte = "Tu es déclaré absent aujourd'hui : tu ne peux pas faire tes points."; }
+  const absent = id ? await estAbsent(id) : false;
+  if (mon !== jetonAbsence) return;
+  bloque = absent ? texte : '';
+  bandeau.textContent = bloque; bandeau.hidden = !absent; $('suivant').disabled = absent;
+}
+if (chef) {
+  let t; const planifier = () => { clearTimeout(t); t = setTimeout(controlerAbsence, 80); };
+  document.addEventListener('cible-changee', planifier);                                    // envoyé par chef-pour.js
+  ['pour-moi', 'pour-agent'].forEach(i => $(i).addEventListener('click', planifier));       // au cas où l'ancien chef-pour.js est en place
+  $('choix-agent').addEventListener('click', planifier);
+} else controlerAbsence();
 
 // 2. Lieu → heures
 LIEUX.forEach((l, i) => lieu.add(new Option(l.nom, i)));
@@ -125,6 +164,7 @@ async function envoyer(d) {
     const p = await getDoc(doc(db, 'users', u.uid));
     if (!p.exists()) throw { code: 'profil-introuvable' };
     const sujet = d.agent || { id: p.data().id, nom: p.data().nom };   // la personne concernée par le point
+    if (await estAbsent(sujet.id)) throw { code: 'absent' };           // dernier contrôle avant l'envoi
     await addDoc(collection(db, COLLECTION), {
       uid: u.uid, pour: d.agent ? 'agent' : 'moi', agentId: sujet.id, nom: sujet.nom,
       ...(d.agent ? { saisiParNom: p.data().nom } : {}),                // chef qui a saisi le point pour un agent
@@ -138,7 +178,8 @@ async function envoyer(d) {
       <button class="btn vide" id="nouveau">Saisir un autre point</button></div>`;
     $('nouveau').onclick = () => location.reload();
   } catch (e) {
-    m.textContent = e.code === 'permission-denied'
+    m.textContent = e.code === 'absent' ? "Cet agent est déclaré absent aujourd'hui : les points ne peuvent pas être envoyés."
+      : e.code === 'permission-denied'
       ? 'Envoi refusé : vérifie les règles Firebase et le nom de la collection.'
       : "Envoi impossible. Vérifie ta connexion puis réessaie.";
     b.textContent = 'ENVOYER';
@@ -154,6 +195,7 @@ const erreur = (texte, el) => {
 $('suivant').onclick = () => {
   msg.textContent = '';
   document.querySelectorAll('.erreur').forEach(x => x.classList.remove('erreur'));
+  if (bloque) return erreur(bloque);
   if (chef) { const e = chef.verifier(); if (e) return erreur(e.texte, e.el); }
   if (!lieu.value) return erreur('Choisis le lieu.', lieu);
   if (!heure.value) return erreur("Choisis l'heure.", heure);
