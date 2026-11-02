@@ -6,6 +6,8 @@ import { genererPDF } from './permission-pdf.js';
 
 // Nom EXACT de la collection Firestore qui reçoit les demandes (copie-le tel qu'il apparaît dans la console Firebase)
 const COLLECTION = 'demande de permission';
+// Délai minimum : une demande doit être faite au moins 5 jours avant la date de départ
+const DELAI_MIN_JOURS = 5;
 
 const $ = id => document.getElementById(id);
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -13,10 +15,37 @@ const chiffres = v => v.replace(/\D/g, '');
 const chef = document.documentElement.dataset.profil === 'chef' ? await import('./chef-pour.js') : null;
 const main = document.querySelector('main.pj'), msg = $('msg');
 
+// ---------- Fenêtre d'avertissement (délai de la demande) ----------
+function avertir(titre, texte) {
+  const prec = document.body.style.overflow;
+  const fond = document.createElement('div');
+  fond.className = 'sig-fond';
+  fond.innerHTML = `<div class="sig-carte" role="alertdialog" aria-modal="true" aria-label="${esc(titre)}">
+    <p style="font-size:19px">⚠ ${esc(titre)}</p><p style="font-weight:400;line-height:1.5">${esc(texte)}</p>
+    <button type="button" class="btn">J'ai compris</button></div>`;
+  document.body.append(fond); document.body.style.overflow = 'hidden';
+  fond.querySelector('button').onclick = () => { fond.remove(); document.body.style.overflow = prec; };
+}
+const frDate = d => d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+// date de départ la plus proche acceptée : aujourd'hui + 5 jours
+const departMin = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + DELAI_MIN_JOURS); return d; };
+// à l'ouverture de la page : rappel de la règle
+//avertir('Délai de la demande', `Une demande de permission doit être faite au moins ${DELAI_MIN_JOURS} jours avant la date de départ. Une demande faite moins de ${DELAI_MIN_JOURS} jours avant le départ ne pourra pas être envoyée.`);
+
 // Date du jour
 const maintenant = new Date();
 const aujourdhui = maintenant.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 $('date-jour').textContent = 'Demande permission du ' + aujourdhui;
+
+// Avis affiché à l'entrée de la page : une demande doit être faite au moins 5 jours avant le départ
+const DELAI_JOURS = 5;
+$('avis-ok').onclick = () => ($('avis-delai').hidden = true);
+const minuitAujourdhui = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate());
+const joursAvantDepart = depart => Math.round((depart - minuitAujourdhui) / 86400000);
+const messageDelai = () => {
+  const d = new Date(minuitAujourdhui); d.setDate(d.getDate() + DELAI_JOURS);
+  return `Une demande de permission doit être faite au moins ${DELAI_JOURS} jours avant la date de départ : le départ ne peut pas être avant le ${d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}.`;
+};
 
 // Préremplissage (modifiable) : téléphone et fonction de la personne connectée
 let profil = null, dernier = { tel: '', fonction: '' };
@@ -91,7 +120,9 @@ function afficherResume(d) {
 // ---------- Envoi dans Firestore, puis page de confirmation ----------
 async function envoyer(d) {
   const m = $('msg-resume'), b = $('envoyer'), u = auth.currentUser;
+  if (lireDate(d.periodeDu) < departMin()) { m.textContent = `Délai non respecté : la demande doit être faite au moins ${DELAI_MIN_JOURS} jours avant le départ.`; return; }   // dernier contrôle
   if (!u) { m.textContent = 'Session expirée. Reconnecte-toi.'; return; }
+  if (joursAvantDepart(lireDate(d.periodeDu)) < DELAI_JOURS) { m.textContent = messageDelai(); return; }   // dernier contrôle avant l'envoi
   b.disabled = $('modifier').disabled = $('confirme').disabled = true;
   b.textContent = 'Envoi…'; m.textContent = '';
   try {
@@ -155,6 +186,12 @@ $('suivant').onclick = () => {
     ['reprise', 'Date de reprise invalide (JJ/MM/AAAA).', lireDate(v('reprise'))]
   ];
   for (const [id, texte, ok] of controles) if (!ok) return erreur(texte, $(id));
+  if (lireDate(v('du')) < departMin()) {                                   // moins de 5 jours avant le départ : refusé
+    const msgDelai = `Demande refusée : la date de départ (${v('du')}) est trop proche. Une demande doit être faite au moins ${DELAI_MIN_JOURS} jours avant le départ. Date de départ au plus tôt : ${frDate(departMin())}.`;
+    avertir('Délai non respecté', msgDelai);
+    return erreur(msgDelai, $('du'));
+  }
+  if (joursAvantDepart(lireDate(v('du'))) < DELAI_JOURS) return erreur(messageDelai(), $('du'));      // moins de 5 jours avant le départ : refusé
   if (lireDate(v('au')) < lireDate(v('du'))) return erreur('La date de fin doit être après la date de début.', $('au'));
   if (lireDate(v('reprise')) <= lireDate(v('au'))) return erreur("La date de reprise doit être après la fin de l'absence.", $('reprise'));
   if (!signature) return erreur('Signe la demande (touche le cadre « Signature »).', $('signature-boite'));

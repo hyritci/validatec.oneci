@@ -36,3 +36,9 @@
 .retour-lien{display:inline-block;margin:6px 0 10px;color:#111;font-weight:600;text-decoration:none}
 .reg h1{font-size:clamp(22px,6vw,30px);margin:4px 0 6px}
 .reg-image{display:block;width:100%;height:auto;margin-top:6px;border:1px solid #d8ddda;border-radius:8px}
+
+/* Avis : délai de 5 jours */
+.sig-carte.avis{text-align:center}
+.sig-carte.avis h2{margin:0 0 8px;font-size:20px}
+.sig-carte.avis p{margin:0;font-weight:400;line-height:1.55}
+.sig-carte.avis .btn{margin-top:18px}
